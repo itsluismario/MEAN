@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './post-create.component.css'
 })
 export class PostCreateComponent {
-
+  onAddPost() {
+    alert("Popo");
+  }
 }
