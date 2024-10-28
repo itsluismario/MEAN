@@ -1,0 +1,41 @@
+<!-- post-create.component.html -->
+<div class="max-w-2xl mx-auto p-6 space-y-6">
+  <!-- Post Creation Card -->
+  <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+    <h2 class="text-2xl font-bold mb-4">Create Post</h2>
+
+    <!-- Textarea -->
+    <textarea
+      [(ngModel)]="enteredValue"
+      class="w-full min-h-[150px] p-4 border border-gray-200 rounded-lg
+             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+             transition-all resize-none bg-gray-50"
+      placeholder="What's on your mind?"
+    ></textarea>
+
+    <!-- Action Buttons -->
+    <div class="mt-4 flex justify-end space-x-3">
+      <button
+        hlmBtn
+        variant="outline"
+      >
+        Cancel
+      </button>
+      <button
+        hlmBtn
+        variant="default"
+        (click)="onAddPost()"
+      >
+        Post
+      </button>
+    </div>
+  </div>
+
+  <!-- Post Preview -->
+  <div
+    class="bg-white rounded-lg shadow p-6 border border-gray-200"
+  >
+    <h3 class="text-lg font-semibold mb-2">Your Post</h3>
+    <p class="text-gray-700 whitespace-pre-wrap">{{newPost}}</p>
+  </div>
+</div>
