@@ -1,29 +1,61 @@
 <!-- post-create.component.html -->
 <div class="max-w-2xl mx-auto p-6 space-y-6">
-  <!-- Post Creation Card -->
-  <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-    <h2 class="text-2xl font-bold mb-4">Create Post</h2>
+  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+      <h2 class="text-2xl font-bold mb-4">Create Post</h2>
 
-    <!-- Title Input -->
-    <div class="mb-4">
-      <input [(ngModel)]="enteredTitle" class="w-full p-3 border border-gray-200 rounded-lg
-               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-               transition-all bg-gray-50" placeholder="Post Title" />
+      <!-- Title Input -->
+      <div class="mb-4">
+        <input
+          name="title"
+          ngModel
+          required
+          minlength="3"
+          #title="ngModel"
+          class="w-full p-3 border border-gray-200 rounded-lg
+                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                 transition-all bg-gray-50"
+          placeholder="Post Title"
+        />
+        <app-error
+          [errorMessage]="title.invalid && (title.dirty || title.touched) ?
+            (title.errors?.['required'] ? 'Title is required' :
+             title.errors?.['minlength'] ? 'Title must be at least 3 characters' : null) : null"
+        ></app-error>
+      </div>
+
+      <!-- Content Textarea -->
+      <div class="mb-4">
+        <textarea
+          name="content"
+          ngModel
+          required
+          minlength="3"
+          #content="ngModel"
+          class="w-full min-h-[150px] p-4 border border-gray-200 rounded-lg
+                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                 transition-all resize-none bg-gray-50"
+          placeholder="What's on your mind?"
+        ></textarea>
+        <app-error
+          [errorMessage]="content.invalid && (content.dirty || content.touched) ?
+            (content.errors?.['required'] ? 'Content is required' :
+             content.errors?.['minlength'] ? 'Content must be at least 3 characters' : null) : null"
+        ></app-error>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-4 flex justify-end">
+        <button
+          hlmBtn
+          variant="default"
+          type="submit"
+          [disabled]="!postForm.valid"
+          [class.opacity-50]="!postForm.valid"
+        >
+          Post
+        </button>
+      </div>
     </div>
-
-    <!-- Content Textarea -->
-    <textarea [(ngModel)]="enteredContent" class="w-full min-h-[150px] p-4 border border-gray-200 rounded-lg
-             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-             transition-all resize-none bg-gray-50" placeholder="What's on your mind?"></textarea>
-
-    <!-- Action Buttons -->
-    <div class="mt-4 flex justify-end space-x-3">
-      <button hlmBtn variant="outline">
-        Cancel
-      </button>
-      <button hlmBtn variant="default" (click)="onAddPost()">
-        Post
-      </button>
-    </div>
-  </div>
+  </form>
 </div>
