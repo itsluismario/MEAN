@@ -8,12 +8,7 @@ import {
   HlmAccordionTriggerDirective,
 } from '@spartan-ng/ui-accordion-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
-
-interface Post {
-  title: string;
-  content: string;
-  date: string;
-}
+import { TPost } from './../post.model'
 
 @Component({
   selector: 'app-post-list',
@@ -30,5 +25,5 @@ interface Post {
   styleUrl: './post-list.component.css'
 })
 export class PostListComponent {
-  @Input() posts:Post[] = [];
+  @Input() posts:TPost[] = [];
 }

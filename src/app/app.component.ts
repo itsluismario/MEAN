@@ -4,12 +4,7 @@ import { PostCreateComponent } from './pages/post/post-create/post-create.compon
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './pages/header/header.component';
 import { PostListComponent } from './pages/post/post-list/post-list.component';
-
-interface Post {
-  title: string;
-  content: string;
-  date: string;
-}
+import { TPost } from './pages/post/post.model'
 
 @Component({
   selector: 'app-root',
@@ -19,9 +14,9 @@ interface Post {
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  storedPosts: Post[] = []; // Changed from posts to storedPosts and added type
+  storedPosts: TPost[] = []; // Changed from posts to storedPosts and added type
 
-  onPostAdded(post: Post) {
+  onPostAdded(post: TPost) {
     this.storedPosts.push(post);
   }
 }

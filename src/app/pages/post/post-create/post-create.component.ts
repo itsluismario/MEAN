@@ -3,6 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { TPost } from './../post.model'
 
 @Component({
   selector: 'app-post-create',
@@ -14,10 +15,10 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 export class PostCreateComponent {
   enteredTitle = "";
   enteredContent = "";
-  @Output() postCreated = new EventEmitter();
+  @Output() postCreated = new EventEmitter<TPost>();
 
   onAddPost() {
-    const post = {
+    const post: TPost = {
       title: this.enteredTitle,
       content: this.enteredContent
     };
