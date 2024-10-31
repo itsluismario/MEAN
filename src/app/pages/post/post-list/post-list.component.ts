@@ -9,6 +9,7 @@ import {
 } from '@spartan-ng/ui-accordion-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { TPost } from './../post.model'
+import { PostsService } from '../post.service';
 
 @Component({
   selector: 'app-post-list',
@@ -26,4 +27,6 @@ import { TPost } from './../post.model'
 })
 export class PostListComponent {
   @Input() posts:TPost[] = [];
+
+  constructor(public postservice: PostsService) {}
 }
