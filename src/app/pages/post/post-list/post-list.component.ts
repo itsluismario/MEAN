@@ -5,12 +5,13 @@ import {
   HlmAccordionDirective,
   HlmAccordionIconDirective,
   HlmAccordionItemDirective,
-  HlmAccordionTriggerDirective,
+  HlmAccordionTriggerDirective
 } from '@spartan-ng/ui-accordion-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { TPost } from './../post.model'
 import { PostsService } from '../post.service';
 import { Subscription } from 'rxjs';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 
 @Component({
   selector: 'app-post-list',
@@ -21,7 +22,8 @@ import { Subscription } from 'rxjs';
     HlmAccordionIconDirective,
     HlmAccordionItemDirective,
     HlmAccordionTriggerDirective,
-    HlmIconComponent
+    HlmIconComponent,
+    HlmButtonDirective,
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css'
