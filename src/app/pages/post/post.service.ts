@@ -1,9 +1,8 @@
 // post.service.ts
 import { Injectable } from '@angular/core';
-import { TPost } from './post.model'
-import { Subject } from 'rxjs';
+import { TPost, TMongoDBResponse } from './post.model'
+import { map, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
 
 @Injectable({providedIn: 'root'})
 export class PostsService {
@@ -12,10 +11,21 @@ export class PostsService {
 
   constructor(private http: HttpClient) {}
 
+  private transformPostData(post: { _id: string; title: string; content: string }): TPost {
+    return {
+      id: post._id,
+      title: post.title,
+      content: post.content
+    };
+  }
+
   getPosts(){
-    this.http.get<{message: string, posts: TPost[]}>('http://localhost:3000/api/posts')
-      .subscribe((postData) => {
-        this.posts = postData.posts;
+    this.http.get<TMongoDBResponse>('http://localhost:3000/api/posts')
+      .pipe(
+        map(response => response.posts.map(this.transformPostData))
+      )
+      .subscribe((transformedPosts) => {
+        this.posts = transformedPosts;
         this.postsUpdated.next([...this.posts]);
       });
   }
