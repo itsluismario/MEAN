@@ -1,10 +1,20 @@
 // post.model.ts
-export interface TPost {
-  id: string | null;
+export interface TPostCreated {
   title: string;
   content: string;
 }
 
+export interface TPost {
+  id: string;
+  title: string;
+  content: string;
+}
+
+export interface TPostResponse {
+  message: string;
+  postId: string;
+  post: TPost;
+}
 export interface TMongoDBResponse {
   message: string;
   posts: {

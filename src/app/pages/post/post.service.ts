@@ -1,6 +1,6 @@
 // post.service.ts
 import { Injectable } from '@angular/core';
-import { TPost, TMongoDBResponse } from './post.model'
+import { TPost, TPostCreated, TMongoDBResponse,TPostResponse } from './post.model';
 import { map, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -35,13 +35,27 @@ export class PostsService {
   }
 
   onAddPost(title: string, content: string) {
-    const post: TPost = {id: null, title: title, content: content};
-    this.http.post<{message: string}>('http://localhost:3000/api/posts', post)
+    const post: TPostCreated = { title, content };
+    this.http
+      .post<TPostResponse>('http://localhost:3000/api/posts', post)
       .subscribe((responseData) => {
-        console.log(responseData.message);
-        this.posts.push(post);
+        const createdPost: TPost = {
+          id: responseData.postId,
+          title: post.title,
+          content: post.content
+        };
+        this.posts.push(createdPost);
         this.postsUpdated.next([...this.posts]);
       });
+  }
+
+  deletePost(postId: string) {
+    this.http.delete('http://localhost:3000/api/posts/' + postId)
+      .subscribe(() => {
+        const updatePosts = this.posts.filter(post => post.id !== postId);
+        this.posts = updatePosts;
+        this.postsUpdated.next([...this.posts]);
+      })
   }
 
 }
