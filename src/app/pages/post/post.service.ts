@@ -11,21 +11,11 @@ export class PostsService {
 
   constructor(private http: HttpClient) {}
 
-  private transformPostData(post: { _id: string; title: string; content: string }): TPost {
-    return {
-      id: post._id,
-      title: post.title,
-      content: post.content
-    };
-  }
-
-  getPosts(){
-    this.http.get<TMongoDBResponse>('http://localhost:3000/api/posts')
-      .pipe(
-        map(response => response.posts.map(this.transformPostData))
-      )
-      .subscribe((transformedPosts) => {
-        this.posts = transformedPosts;
+  getPosts() {
+    this.http
+      .get<{message: string, posts: TPost[]}>('http://localhost:3000/api/posts')
+      .subscribe(response => {
+        this.posts = response.posts;
         this.postsUpdated.next([...this.posts]);
       });
   }
