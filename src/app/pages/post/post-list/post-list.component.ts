@@ -12,11 +12,13 @@ import { TPost } from './../post.model'
 import { PostsService } from '../post.service';
 import { Subscription } from 'rxjs';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
   standalone: true,
   imports: [
+    RouterModule,
     HlmAccordionContentComponent,
     HlmAccordionDirective,
     HlmAccordionIconDirective,

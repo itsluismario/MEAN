@@ -16,7 +16,7 @@
           <p class="text-gray-700">{{ post.content }}</p>
 
           <div class="mt-4 flex justify-end space-x-2">
-            <button hlmBtn variant="outline" size="sm">Edit</button>
+            <a [routerLink]="['/edit', post.id]" hlmBtn variant="outline" size="sm">Edit</a>
             <button hlmBtn variant='destructive' size="sm" (click)="onDelete(post.id)">Delete</button>
           </div>
         </hlm-accordion-content>
