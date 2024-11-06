@@ -8,7 +8,7 @@
       <div class="mb-4">
         <input
           name="title"
-          ngModel
+          [ngModel] = "post.title"
           required
           minlength="3"
           #title="ngModel"
@@ -28,7 +28,7 @@
       <div class="mb-4">
         <textarea
           name="content"
-          ngModel
+          [ngModel] = "post.content"
           required
           minlength="3"
           #content="ngModel"

@@ -19,7 +19,11 @@ export class PostCreateComponent implements OnInit {
   enteredContent = '';
   private postId: string | null = null;
   private mode = 'create';
-  post: TPost | null = null;
+  post: TPost = {
+    id: '',
+    title: '',
+    content: ''
+  };
 
   constructor(public postsService: PostsService, public route: ActivatedRoute) {}
 
@@ -27,19 +31,20 @@ export class PostCreateComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         this.mode = 'edit';
-        this.postId = paramMap.get('postId');
-        if (this.postId) {
-          const foundPost = this.postsService.getPost(this.postId);
+        const postId = paramMap.get('postId');
+        if (postId) {
+          const foundPost = this.postsService.getPost(postId);
           if (foundPost) {
             this.post = foundPost;
-            this.enteredTitle = this.post.title;
-            this.enteredContent = this.post.content;
           }
         }
       } else {
         this.mode = 'create';
-        this.postId = null;
-        this.post = null;
+        this.post = {
+          id: '',
+          title: '',
+          content: ''
+        };
       }
     });
   }
