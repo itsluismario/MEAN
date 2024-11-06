@@ -28,7 +28,7 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
 
-  onAddPost(title: string, content: string) {
+  addPost(title: string, content: string) {
     const post: TPostCreated = { title, content };
     this.http
       .post<TPostResponse>('http://localhost:3000/api/posts', post)
@@ -46,7 +46,7 @@ export class PostsService {
   updatePost(id: string, title: string, content: string) {
     const post: TPost = { id:id, title: title, content: content };
     this.http
-      .put('http://localhost:3000/api/posts' + id, post)
+      .put('http://localhost:3000/api/posts/' + id, post)
       .subscribe(response => console.log(response));
   }
 
