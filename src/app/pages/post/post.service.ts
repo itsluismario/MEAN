@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { TPost, TPostCreated, TMongoDBResponse,TPostResponse, TPostGetResponse } from './post.model';
 import { map, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class PostsService {
   private posts: TPost[] = [];
   private postsUpdated = new Subject<TPost[]>()
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getPosts() {
     this.http
@@ -40,6 +41,7 @@ export class PostsService {
         };
         this.posts.push(createdPost);
         this.postsUpdated.next([...this.posts]);
+        this.router.navigate(['/']);
       });
   }
 
@@ -54,6 +56,7 @@ export class PostsService {
         updatedPost[oldPostIndex] = post;
         this.posts = updatedPost;
         this.postsUpdated.next([...this.posts]);
+        this.router.navigate(['/']);
       }
       );
   }

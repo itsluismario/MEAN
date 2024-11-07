@@ -13,6 +13,7 @@ import { PostsService } from '../post.service';
 import { Subscription } from 'rxjs';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { RouterModule } from '@angular/router';
+import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 
 @Component({
   selector: 'app-post-list',
@@ -26,6 +27,7 @@ import { RouterModule } from '@angular/router';
     HlmAccordionTriggerDirective,
     HlmIconComponent,
     HlmButtonDirective,
+    HlmSpinnerComponent
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css'
@@ -33,6 +35,7 @@ import { RouterModule } from '@angular/router';
 export class PostListComponent implements OnInit, OnDestroy {
   posts: TPost[] = [];
   private postsSub!: Subscription;
+  isLoading = false;
 
   constructor(public postService: PostsService) {}
 
@@ -40,6 +43,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postService.getPosts();
     this.postsSub = this.postService.getPostUpdateListener()
       .subscribe((posts: TPost[]) => {
+        this.isLoading = true;
         this.posts = posts;
       });
   }
