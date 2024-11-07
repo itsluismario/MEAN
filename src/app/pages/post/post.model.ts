@@ -23,3 +23,9 @@ export interface TMongoDBResponse {
     content: string;
   }[];
 }
+
+export interface TPostGetResponse {
+  _id: string;
+  title: string;
+  content: string;
+}

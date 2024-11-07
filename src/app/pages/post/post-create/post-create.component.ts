@@ -34,10 +34,10 @@ export class PostCreateComponent implements OnInit {
         if (paramId) {
           this.mode = 'edit';
           this.postId = paramId;
-          const foundPost = this.postsService.getPost(paramId);
-          if (foundPost) {
-            this.post = foundPost;
-          }
+          this.postsService.getPost(paramId).subscribe(postData => {
+            this.post = {id: postData._id, title: postData.title, content: postData.content
+            }
+          });
         }
       } else {
         this.mode = 'create';

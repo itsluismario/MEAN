@@ -1,6 +1,6 @@
 // post.service.ts
 import { Injectable } from '@angular/core';
-import { TPost, TPostCreated, TMongoDBResponse,TPostResponse } from './post.model';
+import { TPost, TPostCreated, TMongoDBResponse,TPostResponse, TPostGetResponse } from './post.model';
 import { map, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -21,7 +21,7 @@ export class PostsService {
   }
 
   getPost(id: string) {
-    return this.posts.find(p => p.id === id);
+    return this.http.get<TPostGetResponse>('http://localhost:3000/api/posts/' + id);
   }
 
   getPostUpdateListener() {
@@ -47,7 +47,15 @@ export class PostsService {
     const post: TPost = { id:id, title: title, content: content };
     this.http
       .put('http://localhost:3000/api/posts/' + id, post)
-      .subscribe(response => console.log(response));
+      .subscribe(response =>
+      {
+        const updatedPost = [...this.posts];
+        const oldPostIndex = updatedPost.findIndex(p => p.id === post.id);
+        updatedPost[oldPostIndex] = post;
+        this.posts = updatedPost;
+        this.postsUpdated.next([...this.posts]);
+      }
+      );
   }
 
   deletePost(postId: string) {
