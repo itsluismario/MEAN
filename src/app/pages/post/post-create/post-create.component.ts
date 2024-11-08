@@ -5,8 +5,9 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ErrorComponent } from '../error/error.component';
 import { PostsService } from '../post.service';
-import { TPost } from '../post.model';
+import { TPost, TPostForm } from '../post.model';
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
+
 
 @Component({
   selector: 'app-post-create',
@@ -18,13 +19,14 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 export class PostCreateComponent implements OnInit {
   enteredTitle = '';
   enteredContent = '';
-  form = new FormGroup({
+  form = new FormGroup<TPostForm>({
     title: new FormControl('', {
       validators: [Validators.required, Validators.minLength(3)]
     }),
     content: new FormControl('', {
       validators: [Validators.required, Validators.minLength(3)]
-    })
+    }),
+    image: new FormControl(null, {validators: [Validators.required]})
   });
 
   post: TPost = {
@@ -67,6 +69,17 @@ export class PostCreateComponent implements OnInit {
         };
       }
     });
+  }
+
+  onImagePicked(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.form.patchValue({ image: file });
+      this.form.get('image')?.updateValueAndValidity();
+      console.log('Selected file:', file);
+      console.log('Form state:', this.form.value);
+    }
   }
 
   onSavePost() {

@@ -1,4 +1,7 @@
 // post.model.ts
+
+import { FormControl } from '@angular/forms';
+
 export interface TPostCreated {
   title: string;
   content: string;
@@ -28,4 +31,10 @@ export interface TPostGetResponse {
   _id: string;
   title: string;
   content: string;
+}
+
+export interface TPostForm {
+  title: FormControl<string | null>;
+  content: FormControl<string | null>;
+  image: FormControl<File | null>;
 }
