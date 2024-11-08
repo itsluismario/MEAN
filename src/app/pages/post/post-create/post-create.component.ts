@@ -1,6 +1,6 @@
 // post-create.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ErrorComponent } from '../error/error.component';
@@ -11,13 +11,22 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 @Component({
   selector: 'app-post-create',
   standalone: true,
-  imports: [FormsModule, HlmButtonDirective, ErrorComponent, HlmSpinnerComponent],
+  imports: [ReactiveFormsModule, HlmButtonDirective, ErrorComponent, HlmSpinnerComponent],
   templateUrl: './post-create.component.html',
   styleUrl: './post-create.component.css'
 })
 export class PostCreateComponent implements OnInit {
   enteredTitle = '';
   enteredContent = '';
+  form = new FormGroup({
+    title: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)]
+    }),
+    content: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)]
+    })
+  });
+
   post: TPost = {
     id: '',
     title: '',
@@ -41,7 +50,12 @@ export class PostCreateComponent implements OnInit {
             this.isLoading = false;
             this.post = {id: postData._id, title: postData.title, content: postData.content
             }
+            this.form.patchValue({
+              title: this.post.title,
+              content: this.post.content
+            });
           });
+
         }
       } else {
         this.mode = 'create';
@@ -55,20 +69,28 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
-  onSavePost(form: NgForm) {
-    if (form.invalid) {
+  onSavePost() {
+    if (this.form.invalid) {
       return;
     }
     this.isLoading = true;
+
+    const title = this.form.get('title')?.value;
+    const content = this.form.get('content')?.value;
+
+    if (!title || !content) {
+      return;
+    }
+
     if (this.mode === 'create') {
-      this.postsService.addPost(form.value.title, form.value.content);
+      this.postsService.addPost(title, content);
     } else if (this.postId) {
       this.postsService.updatePost(
-          this.postId,
-          form.value.title,
-          form.value.content,
+        this.postId,
+        title,
+        content
       );
     }
-    form.resetForm();
+    this.form.reset();
   }
 }
