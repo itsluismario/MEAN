@@ -11,6 +11,7 @@ export interface TPost {
   id: string;
   title: string;
   content: string;
+  imagePath: string | null;
 }
 
 export interface TPostResponse {

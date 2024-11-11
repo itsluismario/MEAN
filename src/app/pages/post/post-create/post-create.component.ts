@@ -33,7 +33,8 @@ export class PostCreateComponent implements OnInit {
   post: TPost = {
     id: '',
     title: '',
-    content: ''
+    content: '',
+    imagePath: ''
   };
   imagePreview : string | null | ArrayBuffer  = '';
   isLoading = false;
@@ -52,7 +53,7 @@ export class PostCreateComponent implements OnInit {
           this.isLoading = true;
           this.postsService.getPost(paramId).subscribe(postData => {
             this.isLoading = false;
-            this.post = {id: postData._id, title: postData.title, content: postData.content
+            this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath: null
             }
             this.form.patchValue({
               title: this.post.title,
@@ -67,7 +68,8 @@ export class PostCreateComponent implements OnInit {
         this.post = {
           id: '',
           title: '',
-          content: ''
+          content: '',
+          imagePath: ''
         };
       }
     });
