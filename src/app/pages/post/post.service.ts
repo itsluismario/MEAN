@@ -29,17 +29,22 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
 
-  addPost(title: string, content: string) {
-    const post: TPostCreated = { title, content };
+  addPost(title: string, content: string, image: File | null) {
+    const postData = new FormData();
+    postData.append('title', title);
+    postData.append('content', content);
+    if (image) {
+      postData.append('image', image, image.name);
+    }
     this.http
-      .post<TPostResponse>('http://localhost:3000/api/posts', post)
+      .post<{ message: string, postId: string }>('http://localhost:3000/api/posts', postData)
       .subscribe((responseData) => {
-        const createdPost: TPost = {
+        const post: TPost = {
           id: responseData.postId,
-          title: post.title,
-          content: post.content
+          title: title,
+          content: content
         };
-        this.posts.push(createdPost);
+        this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(['/']);
       });
