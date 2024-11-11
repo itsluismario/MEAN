@@ -34,6 +34,7 @@ export class PostCreateComponent implements OnInit {
     title: '',
     content: ''
   };
+  imagePreview : string | null | ArrayBuffer  = '';
   isLoading = false;
   private postId: string | null = null;
   mode = 'create';
@@ -77,9 +78,18 @@ export class PostCreateComponent implements OnInit {
       const file = input.files[0];
       this.form.patchValue({ image: file });
       this.form.get('image')?.updateValueAndValidity();
-      console.log('Selected file:', file);
-      console.log('Form state:', this.form.value);
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
     }
+  }
+
+  removeImage() {
+    this.imagePreview = '';
+    this.form.patchValue({ image: null });
+    this.form.get('image')?.updateValueAndValidity();
   }
 
   onSavePost() {

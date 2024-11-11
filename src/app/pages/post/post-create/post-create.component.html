@@ -29,14 +29,41 @@
         </div>
 
         <!-- File Upload Section -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+        <div class="mb-4 space-y-4">
+          <label class="block text-sm font-medium text-gray-700">
             Add Image
           </label>
+
+          <!-- Image Preview -->
+          @if (imagePreview) {
+            <div class="relative group">
+              <div class="aspect-video w-full overflow-hidden rounded-lg border-2 border-gray-200">
+                <img
+                  [src]="imagePreview"
+                  [alt]="form.value.title || 'Preview'"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                >
+              </div>
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <button
+                  type="button"
+                  hlmBtn
+                  variant="destructive"
+                  class="!bg-red-500 hover:!bg-red-600"
+                  (click)="removeImage()"
+                >
+                  Remove Image
+                </button>
+              </div>
+            </div>
+          }
+
+          <!-- Upload Area -->
           <div class="flex items-center justify-center w-full">
             <label class="flex flex-col items-center justify-center w-full h-32
                          border-2 border-gray-300 border-dashed rounded-lg
-                         cursor-pointer bg-gray-50 hover:bg-gray-100">
+                         cursor-pointer bg-gray-50 hover:bg-gray-100
+                         transition-colors duration-300">
               <div class="flex flex-col items-center justify-center pt-5 pb-6">
                 <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
@@ -54,6 +81,13 @@
               />
             </label>
           </div>
+
+          @if (form.get('image')?.invalid && (form.get('image')?.dirty || form.get('image')?.touched)) {
+            <app-error
+              [errorMessage]="form.get('image')?.errors?.['required'] ?
+                'Image is required' : null"
+            ></app-error>
+          }
         </div>
 
         <!-- Content Textarea -->
