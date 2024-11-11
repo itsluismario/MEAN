@@ -43,6 +43,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postService.getPosts();
     this.postsSub = this.postService.getPostUpdateListener()
       .subscribe((posts: TPost[]) => {
+        console.log('Posts with images:', posts);
         this.isLoading = true;
         this.posts = posts;
       });
