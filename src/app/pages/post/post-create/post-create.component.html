@@ -35,7 +35,7 @@
           </label>
 
           <!-- Image Preview -->
-          @if (imagePreview) {
+          @if (imagePreview && form.get('image')?.valid) {
             <div class="relative group">
               <div class="aspect-video w-full overflow-hidden rounded-lg border-2 border-gray-200">
                 <img
@@ -82,12 +82,14 @@
             </label>
           </div>
 
-          @if (form.get('image')?.invalid && (form.get('image')?.dirty || form.get('image')?.touched)) {
-            <app-error
-              [errorMessage]="form.get('image')?.errors?.['required'] ?
-                'Image is required' : null"
-            ></app-error>
-          }
+        @if (form.get('image')?.invalid || (form.get('image')?.dirty || form.get('image')?.touched)) {
+          <app-error
+            [errorMessage]="form.get('image')?.errors?.['required'] ?
+              'Image is required' :
+              form.get('image')?.errors?.['invalidMimeType'] ?
+              'Invalid file type. Only PNG, JPG or JPEG files are allowed.' : null"
+          ></app-error>
+        }
         </div>
 
         <!-- Content Textarea -->
@@ -99,7 +101,7 @@
                    transition-all resize-none bg-gray-50"
             placeholder="What's on your mind?"
           ></textarea>
-          @if (form.get('content')?.invalid && (form.get('content')?.dirty || form.get('content')?.touched)) {
+          @if (form.get('content')?.invalid || (form.get('content')?.dirty || form.get('content')?.touched)) {
             <app-error
               [errorMessage]="form.get('content')?.errors?.['required'] ?
                 'Content is required' :

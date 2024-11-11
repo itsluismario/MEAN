@@ -7,6 +7,7 @@ import { ErrorComponent } from '../error/error.component';
 import { PostsService } from '../post.service';
 import { TPost, TPostForm } from '../post.model';
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
+import { mimeType } from './mime-type.validator';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class PostCreateComponent implements OnInit {
     content: new FormControl('', {
       validators: [Validators.required, Validators.minLength(3)]
     }),
-    image: new FormControl(null, {validators: [Validators.required]})
+    image: new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
   });
 
   post: TPost = {
