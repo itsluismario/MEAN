@@ -70,14 +70,14 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.paginationForm.get('pageSize')?.valueChanges.subscribe(size => {
       if (size) {
         this.postsPerPage = size;
-        this.currentPage = 1; // Reset to first page when changing size
+        this.currentPage = 1;
         this.updateDisplayedPosts();
       }
     });
   }
 
   ngOnInit(): void {
-    this.postService.getPosts();
+    this.postService.getPosts(this.postsPerPage, this.currentPage);
     this.postsSub = this.postService.getPostUpdateListener()
       .subscribe((posts: TPost[]) => {
         this.isLoading = true;

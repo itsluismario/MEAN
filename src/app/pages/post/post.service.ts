@@ -17,9 +17,10 @@ export class PostsService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getPosts() {
+  getPosts(postPerPage: number, currentPage: number) {
+    const queryParams =  `?pageSize=${postPerPage}&page=${currentPage}`;
     this.http
-      .get<{message: string, posts: TPost[]}>('http://localhost:3000/api/posts')
+      .get<{message: string, posts: TPost[]}>('http://localhost:3000/api/posts' + queryParams)
       .subscribe(response => {
         this.posts = response.posts;
         this.postsUpdated.next([...this.posts]);
