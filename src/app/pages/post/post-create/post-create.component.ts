@@ -53,11 +53,12 @@ export class PostCreateComponent implements OnInit {
           this.isLoading = true;
           this.postsService.getPost(paramId).subscribe(postData => {
             this.isLoading = false;
-            this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath: null
+            this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath: postData.imagePath
             }
             this.form.patchValue({
               title: this.post.title,
-              content: this.post.content
+              content: this.post.content,
+              image: this.post.imagePath
             });
           });
 
@@ -120,7 +121,8 @@ export class PostCreateComponent implements OnInit {
       this.postsService.updatePost(
         this.postId,
         title,
-        content
+        content,
+        image
       );
     }
     this.form.reset();

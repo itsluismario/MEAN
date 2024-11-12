@@ -5,6 +5,11 @@ import { map, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+interface UpdatePostResponse {
+  message: string;
+  imagePath: string | null;
+}
+
 @Injectable({providedIn: 'root'})
 export class PostsService {
   private posts: TPost[] = [];
@@ -51,14 +56,36 @@ export class PostsService {
       });
   }
 
-  updatePost(id: string, title: string, content: string) {
-    const post: TPost = { id:id, title: title, content: content, imagePath: null };
+  updatePost(id: string, title: string, content: string, image: File | string | null | undefined) {
+    let postData: TPost | FormData;
+    if (typeof image === 'object') {
+      postData = new FormData();
+      postData.append('title', title);
+      postData.append('content', content);
+      if (image instanceof File) {
+        // Now TypeScript knows image is definitely a File here
+        postData.append('image', image, title);
+      }
+    } else {
+      postData = {
+        id: id,
+        title: title,
+        content: content,
+        imagePath: image || null,
+      }
+    }
     this.http
-      .put('http://localhost:3000/api/posts/' + id, post)
+      .put<UpdatePostResponse>('http://localhost:3000/api/posts/' + id, postData)
       .subscribe(response =>
       {
         const updatedPost = [...this.posts];
-        const oldPostIndex = updatedPost.findIndex(p => p.id === post.id);
+        const oldPostIndex = updatedPost.findIndex(p => p.id === id);
+        const post: TPost = {
+          id: id,
+          title: title,
+          content: content,
+          imagePath: response.imagePath
+        };
         updatedPost[oldPostIndex] = post;
         this.posts = updatedPost;
         this.postsUpdated.next([...this.posts]);

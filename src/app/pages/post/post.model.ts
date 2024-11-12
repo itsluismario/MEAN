@@ -32,10 +32,11 @@ export interface TPostGetResponse {
   _id: string;
   title: string;
   content: string;
+  imagePath: string;
 }
 
 export interface TPostForm {
   title: FormControl<string | null>;
   content: FormControl<string | null>;
-  image: FormControl<File | null>;
+  image: FormControl<File | string | null>;
 }
