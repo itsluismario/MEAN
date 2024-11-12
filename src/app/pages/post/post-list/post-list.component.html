@@ -6,11 +6,13 @@
     </div>
   } @else {
     <div hlmAccordion type="multiple">
-      @for (post of posts; track post.title) {
+      @for (post of displayedPosts; track post.id; let i = $index) {
         <div hlmAccordionItem class="bg-white rounded-lg shadow-sm border border-gray-200 mb-4">
           <button hlmAccordionTrigger class="flex justify-between items-center p-4 w-full hover:bg-gray-50">
             <div>
-              <h3 class="text-lg font-semibold">{{ post.title }}</h3>
+              <h3 class="text-lg font-semibold">
+                {{ post.title }}
+              </h3>
             </div>
             <hlm-icon hlmAccIcon />
           </button>
@@ -40,9 +42,79 @@
       }
     </div>
 
-    @if (posts.length === 0 && isLoading) {
+    @if (displayedPosts.length === 0) {
       <div class="text-center py-8 text-gray-500">
         No posts available
+      </div>
+    }
+
+    @if (posts.length > 0) {
+      <div class="mt-6 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4" [formGroup]="paginationForm">
+          <select
+            formControlName="pageSize"
+            class="h-9 px-3 py-1 border rounded-md text-sm"
+          >
+            @for (option of pageSizeOptions; track option) {
+              <option [value]="option">{{ option }} per page</option>
+            }
+          </select>
+
+          <span class="text-sm text-gray-600 whitespace-nowrap">
+            Showing {{ (currentPage - 1) * postsPerPage + 1 }} -
+            {{ Math.min(currentPage * postsPerPage, totalPosts) }}
+            of {{ totalPosts }} posts
+          </span>
+        </div>
+
+        <!-- Spartan Pagination -->
+<nav hlmPagination>
+  <ul hlmPaginationContent class="flex items-center">
+    <li hlmPaginationItem class="mr-8">
+      <button
+        hlmPaginationLink
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+        class="px-2"
+      >
+        <hlm-pagination-previous />
+      </button>
+    </li>
+
+    <div class="flex items-center gap-2">
+      @for (page of getPageNumbers(); track page; let i = $index) {
+        <li hlmPaginationItem>
+          <button
+            hlmPaginationLink
+            [class.bg-primary]="currentPage === page"
+            [class.text-primary-foreground]="currentPage === page"
+            (click)="onPageChange(page)"
+            class="min-w-[2.5rem] h-10 flex items-center justify-center"
+          >
+            {{ page }}
+          </button>
+        </li>
+
+        @if (shouldShowEllipsis(i, getPageNumbers())) {
+          <li hlmPaginationItem class="mx-2">
+            <hlm-pagination-ellipsis />
+          </li>
+        }
+      }
+    </div>
+
+    <li hlmPaginationItem class="ml-8">
+      <button
+        hlmPaginationLink
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)"
+        class="px-2"
+      >
+        <hlm-pagination-next />
+      </button>
+    </li>
+  </ul>
+</nav>
       </div>
     }
   }
