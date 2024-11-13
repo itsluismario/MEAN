@@ -57,9 +57,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   totalPosts = 0;
   postsPerPage = 2;
   currentPage = 1;
-  pageSizeOptions = [1, 2, 3, 50];
-  displayedPosts: TPost[] = [];
-  totalPages = 0;
+  pageSizeOptions = [1, 2, 3, 10];
   Math = Math;
 
   paginationForm = new FormGroup({
@@ -69,45 +67,42 @@ export class PostListComponent implements OnInit, OnDestroy {
   constructor(public postService: PostsService) {
     this.paginationForm.get('pageSize')?.valueChanges.subscribe(size => {
       if (size) {
+        this.isLoading = true;
         this.postsPerPage = size;
         this.currentPage = 1;
-        this.updateDisplayedPosts();
+        this.postService.getPosts(this.postsPerPage, this.currentPage);
       }
     });
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.postService.getPosts(this.postsPerPage, this.currentPage);
-    this.postsSub = this.postService.getPostUpdateListener()
-      .subscribe((posts: TPost[]) => {
-        this.isLoading = true;
-        this.posts = posts;
-        this.totalPosts = posts.length;
-        this.updateDisplayedPosts();
+    this.postsSub = this.postService
+      .getPostUpdateListener()
+      .subscribe((postData: {posts: TPost[], postCount: number}) => {
+        this.posts = postData.posts;
+        this.totalPosts = postData.postCount;
+        this.isLoading = false;
       });
   }
 
-  updateDisplayedPosts() {
-    const start = (this.currentPage - 1) * this.postsPerPage;
-    const end = start + this.postsPerPage;
-    this.displayedPosts = this.posts.slice(start, end);
-    this.totalPages = Math.ceil(this.posts.length / this.postsPerPage);
-  }
-
   onPageChange(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
+    const totalPages = Math.ceil(this.totalPosts / this.postsPerPage);
+    if (page >= 1 && page <= totalPages) {
+      this.isLoading = true;
       this.currentPage = page;
-      this.updateDisplayedPosts();
+      this.postService.getPosts(this.postsPerPage, this.currentPage);
     }
   }
 
   getPageNumbers(): number[] {
+    const totalPages = Math.ceil(this.totalPosts / this.postsPerPage);
     const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
-      // Show first page, last page, and pages around current page
+    for (let i = 1; i <= totalPages; i++) {
       if (
         i === 1 ||
-        i === this.totalPages ||
+        i === totalPages ||
         (i >= this.currentPage - 1 && i <= this.currentPage + 1)
       ) {
         pages.push(i);
@@ -121,7 +116,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(postId: string) {
-    this.postService.deletePost(postId);
+    this.isLoading = true;
+    this.postService.deletePost(postId).subscribe(() => {
+      this.postService.getPosts(this.postsPerPage, this.currentPage);
+    });
   }
 
   ngOnDestroy(): void {
