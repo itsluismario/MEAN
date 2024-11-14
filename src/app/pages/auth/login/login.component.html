@@ -4,7 +4,7 @@
       <hlm-spinner class="h-8 w-8" />
     </div>
   } @else {
-    <form class="w-full max-w-md">
+    <form (submit)="onLogin(loginForm)" #loginForm="ngForm" class="w-full max-w-md">
       <div class="bg-gray-900 rounded-2xl p-4 sm:p-6 border border-gray-800">
         <h2 class="text-xl sm:text-2xl font-bold mb-6 text-white text-center">Login</h2>
 
@@ -13,23 +13,50 @@
           <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
           <input
             type="email"
+            name="email"
+            ngModel
+            #emailInput="ngModel"
+            pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
             class="w-full p-3 border border-gray-700 rounded-xl
                     focus:ring-2 focus:ring-blue-400 focus:border-blue-400
                     transition-all bg-gray-800 text-white placeholder-gray-500"
             placeholder="Your email"
+            required
+            email
           />
+          @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
+            <div class="mt-1 text-sm text-red-400">
+              @if (emailInput.errors?.['required']) {
+                <p>Email is required</p>
+              }
+              @if (emailInput.errors?.['pattern']) {
+                <p>Please enter a valid email address</p>
+              }
+            </div>
+          }
         </div>
 
         <!-- Password Input -->
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
           <input
+            name="password"
+            ngModel
             type="password"
+            #passwordInput="ngModel"
             class="w-full p-3 border border-gray-700 rounded-xl
                     focus:ring-2 focus:ring-blue-400 focus:border-blue-400
                     transition-all bg-gray-800 text-white placeholder-gray-500"
             placeholder="Your password"
+            required
           />
+          @if (passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)) {
+            <div class="mt-1 text-sm text-red-400">
+              @if (passwordInput.errors?.['required']) {
+                <p>Password is required</p>
+              }
+            </div>
+          }
         </div>
 
         <!-- Action Button -->
@@ -38,9 +65,11 @@
             hlmBtn
             variant="default"
             type="submit"
+            [disabled]="loginForm.invalid"
             class="w-full sm:w-auto px-8 py-2.5 text-base font-semibold
                    bg-blue-500 hover:bg-blue-600 text-white rounded-full
-                   transition-colors duration-200"
+                   transition-colors duration-200
+                   disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Log in
           </button>
