@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import { SharedModule } from '../../../shared/shared.module';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,12 @@ import { SharedModule } from '../../../shared/shared.module';
 export class LoginComponent {
   isLoading = false;
 
+  constructor(public authService: AuthService) {}
+
   onLogin(form: NgForm) {
-    console.log(form.value);
+    if (form.invalid) {
+      return;
+    }
+    this.authService.login(form.value.email, form.value.password);
   }
 }

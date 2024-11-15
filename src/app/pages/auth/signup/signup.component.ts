@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import type { NgForm } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
