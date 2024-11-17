@@ -9,7 +9,6 @@ import { TPost, TPostForm } from '../post.model';
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import { mimeType } from './mime-type.validator';
 
-
 @Component({
   selector: 'app-post-create',
   standalone: true,
