@@ -1,3 +1,4 @@
+// login.component.ts
 import { Component } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
@@ -19,6 +20,7 @@ export class LoginComponent {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     this.authService.login(form.value.email, form.value.password);
   }
 }

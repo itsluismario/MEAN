@@ -65,13 +65,15 @@
             hlmBtn
             variant="default"
             type="submit"
-            [disabled]="loginForm.invalid"
+            [disabled]="loginForm.invalid || isLoading"
             class="w-full sm:w-auto px-8 py-2.5 text-base font-semibold
                    bg-blue-500 hover:bg-blue-600 text-white rounded-full
                    transition-colors duration-200
-                   disabled:opacity-50 disabled:cursor-not-allowed"
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   flex items-center justify-center gap-2"
           >
-            Log in
+            <hlm-spinner *ngIf="isLoading" size="sm" class="text-white"></hlm-spinner>
+            <span>{{ isLoading ? 'Logging in...' : 'Log in' }}</span>
           </button>
         </div>
       </div>
