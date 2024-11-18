@@ -4,6 +4,7 @@ import { PostCreateComponent } from './pages/post/post-create/post-create.compon
 import { PostListComponent } from './pages/post/post-list/post-list.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
+import { AuthGuard } from './pages/auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -12,10 +13,12 @@ export const routes: Routes = [
   },
   {
     path: 'create',
+    canActivate: [AuthGuard],
     component: PostCreateComponent
   },
   {
     path: 'edit/:postId',
+    canActivate: [AuthGuard],
     component: PostCreateComponent
   },
   {
