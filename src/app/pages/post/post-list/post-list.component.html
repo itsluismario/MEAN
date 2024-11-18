@@ -32,11 +32,13 @@
                 </div>
               </div>
             }
+            @if (isUserAuthenticated) {
+              <div class="mt-4 flex justify-end space-x-2" >
+                <a [routerLink]="['/edit', post.id]" hlmBtn variant="outline" size="sm">Edit</a>
+                <button hlmBtn variant="destructive" size="sm" (click)="onDelete(post.id)">Delete</button>
+              </div>
+            }
 
-            <div class="mt-4 flex justify-end space-x-2">
-              <a [routerLink]="['/edit', post.id]" hlmBtn variant="outline" size="sm">Edit</a>
-              <button hlmBtn variant="destructive" size="sm" (click)="onDelete(post.id)">Delete</button>
-            </div>
           </hlm-accordion-content>
         </div>
       }

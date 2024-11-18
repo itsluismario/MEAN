@@ -24,6 +24,7 @@ import {
   HlmPaginationNextComponent,
   HlmPaginationPreviousComponent,
 } from '@spartan-ng/ui-pagination-helm';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-post-list',
@@ -49,22 +50,26 @@ import {
   ],
   templateUrl: './post-list.component.html',
 })
-// post-list.component.ts
+
 export class PostListComponent implements OnInit, OnDestroy {
   posts: TPost[] = [];
-  private postsSub!: Subscription;
   isLoading = false;
   totalPosts = 0;
   postsPerPage = 2;
   currentPage = 1;
   pageSizeOptions = [1, 2, 3, 10];
   Math = Math;
+  isUserAuthenticated = false;
+  private postsSub!: Subscription;
+  private authStatusSub!: Subscription;
 
   paginationForm = new FormGroup({
     pageSize: new FormControl(this.postsPerPage)
   });
 
-  constructor(public postService: PostsService) {
+  constructor(public postService: PostsService, private authService: AuthService) {}
+
+  ngOnInit(): void {
     this.paginationForm.get('pageSize')?.valueChanges.subscribe(size => {
       if (size) {
         this.isLoading = true;
@@ -73,9 +78,6 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.postService.getPosts(this.postsPerPage, this.currentPage);
       }
     });
-  }
-
-  ngOnInit(): void {
     this.isLoading = true;
     this.postService.getPosts(this.postsPerPage, this.currentPage);
     this.postsSub = this.postService
@@ -84,6 +86,11 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.posts = postData.posts;
         this.totalPosts = postData.postCount;
         this.isLoading = false;
+      });
+    this.isUserAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.isUserAuthenticated =  isAuthenticated;
       });
   }
 
@@ -124,5 +131,6 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.postsSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
   }
 }
