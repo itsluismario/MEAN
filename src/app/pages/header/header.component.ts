@@ -1,3 +1,4 @@
+// header.component.ts
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { RouterLink } from '@angular/router';
@@ -32,6 +33,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userIsAuthenticated = isAuthenticated;
       }
     );
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
   ngOnDestroy() {

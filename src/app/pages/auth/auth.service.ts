@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 
 @Injectable ({ providedIn: 'root'})
 export class AuthService {
-  private token: string = '';
+  private token: string | null = '';
   private isAuthenticated = false;
   private authStatusListener = new Subject<boolean>();
 
@@ -43,6 +43,12 @@ export class AuthService {
           this.authStatusListener.next(true);
         }
       });
+  }
+
+  logout() {
+    this.token = null;
+    this.isAuthenticated = false;
+    this.authStatusListener.next(false);
   }
 
 }
