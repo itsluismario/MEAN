@@ -1,11 +1,12 @@
 // app.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PostCreateComponent } from './pages/post/post-create/post-create.component';
 import { HeaderComponent } from './pages/header/header.component';
 import { PostListComponent } from './pages/post/post-list/post-list.component';
 import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { AuthService } from './pages/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,5 +15,10 @@ import { LoginComponent } from './pages/auth/login/login.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  constructor (private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.autoAuthUser();
+  }
 }
