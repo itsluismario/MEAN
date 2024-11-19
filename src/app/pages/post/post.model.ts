@@ -12,6 +12,7 @@ export interface TPost {
   title: string;
   content: string;
   imagePath: string | null;
+  creator: string | null;
 }
 
 export interface TPostResponse {
@@ -33,6 +34,7 @@ export interface TPostGetResponse {
   title: string;
   content: string;
   imagePath: string;
+  creator: string;
 }
 
 export interface TPostForm {

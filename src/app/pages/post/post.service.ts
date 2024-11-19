@@ -22,7 +22,7 @@ export class PostsService {
     const queryParams = `?pagesize=${postPerPage}&page=${currentPage}`;
 
     this.http
-      .get<{message: string, posts: TPost[], maxPosts: number}>('http://localhost:3000/api/posts' + queryParams)
+      .get<{message: string, posts: TPost[], maxPosts: number, creator: string}>('http://localhost:3000/api/posts' + queryParams)
       .pipe(map(postData => {
         return {
           posts: postData.posts.map(post => {
@@ -30,7 +30,8 @@ export class PostsService {
               title: post.title,
               content: post.content,
               id: post.id,
-              imagePath: post.imagePath
+              imagePath: post.imagePath,
+              creator: post.creator
             }
           }),
           maxPosts: postData.maxPosts
@@ -84,6 +85,7 @@ export class PostsService {
         title: title,
         content: content,
         imagePath: image || null,
+        creator: null
       }
     }
     this.http
