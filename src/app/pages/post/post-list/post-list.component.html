@@ -32,7 +32,7 @@
                 </div>
               </div>
             }
-            @if (isUserAuthenticated) {
+            @if (isUserAuthenticated && userId === post.creator) {
               <div class="mt-4 flex justify-end space-x-2" >
                 <a [routerLink]="['/edit', post.id]" hlmBtn variant="outline" size="sm">Edit</a>
                 <button hlmBtn variant="destructive" size="sm" (click)="onDelete(post.id)">Delete</button>
