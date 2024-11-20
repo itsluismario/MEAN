@@ -1,5 +1,5 @@
 // post-create.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -8,6 +8,8 @@ import { PostsService } from '../post.service';
 import { TPost, TPostForm } from '../post.model';
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import { mimeType } from './mime-type.validator';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-post-create',
@@ -16,7 +18,7 @@ import { mimeType } from './mime-type.validator';
   templateUrl: './post-create.component.html',
   styleUrl: './post-create.component.css'
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent implements OnInit, OnDestroy {
   enteredTitle = '';
   enteredContent = '';
   form = new FormGroup<TPostForm>({
@@ -39,11 +41,22 @@ export class PostCreateComponent implements OnInit {
   imagePreview : string | null | ArrayBuffer  = '';
   isLoading = false;
   private postId: string | null = null;
+  private authStatusSub!: Subscription;
   mode = 'create';
 
-  constructor(public postsService: PostsService, public route: ActivatedRoute) {}
+  constructor(
+    public postsService: PostsService,
+    public route: ActivatedRoute,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
+    this.authService.getAuthStatusListener()
+      .subscribe(
+        authStatus => {
+          this.isLoading = false;
+        }
+      );
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         const paramId = paramMap.get('postId');
@@ -127,5 +140,9 @@ export class PostCreateComponent implements OnInit {
       );
     }
     this.form.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.authStatusSub.unsubscribe();
   }
 }
