@@ -7,11 +7,12 @@ import { PostListComponent } from './pages/post/post-list/post-list.component';
 import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { AuthService } from './pages/auth/auth.service';
+import { ErrorDialogComponent } from './error/error-dialog.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [SharedModule, RouterOutlet, PostCreateComponent, HeaderComponent, PostListComponent, LoginComponent],
+  imports: [SharedModule, RouterOutlet, PostCreateComponent, HeaderComponent, PostListComponent, LoginComponent, ErrorDialogComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
