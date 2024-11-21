@@ -41,7 +41,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   imagePreview : string | null | ArrayBuffer  = '';
   isLoading = false;
   private postId: string | null = null;
-  private authStatusSub!: Subscription;
+  private authStatusSub: Subscription = new Subscription();
   mode = 'create';
 
   constructor(
@@ -51,12 +51,12 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authService.getAuthStatusListener()
-      .subscribe(
-        authStatus => {
-          this.isLoading = false;
-        }
-      );
+    this.authStatusSub = this.authService.getAuthStatusListener()
+    .subscribe(
+      authStatus => {
+        this.isLoading = false;
+      }
+    );
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         const paramId = paramMap.get('postId');
@@ -143,6 +143,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.authStatusSub.unsubscribe();
+    if (this.authStatusSub) {
+      this.authStatusSub.unsubscribe();
+    }
   }
 }
