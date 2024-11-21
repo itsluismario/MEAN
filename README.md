@@ -9,6 +9,10 @@
 </h1>
 
 <p align="center">
+  <img src="./public/MEAN.gif" alt="Application Demo" width="800"/>
+</p>
+
+<p align="center">
   Modern, Secure, and Scalable Web Application built with Angular
 </p>
 
