@@ -1,20 +1,19 @@
 // post-create.component.ts
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ErrorComponent } from '../error/error.component';
 import { PostsService } from '../post.service';
 import { TPost, TPostForm } from '../post.model';
-import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import { mimeType } from './mime-type.validator';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-post-create',
   standalone: true,
-  imports: [ReactiveFormsModule, HlmButtonDirective, ErrorComponent, HlmSpinnerComponent],
+  imports: [ReactiveFormsModule, SharedModule, ErrorComponent],
   templateUrl: './post-create.component.html',
   styleUrl: './post-create.component.css'
 })

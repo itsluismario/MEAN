@@ -1,17 +1,18 @@
 // header.component.ts
 import { Component, OnInit, OnDestroy} from '@angular/core';
-import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared.module';
+
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    HlmButtonDirective,
+    SharedModule,
     RouterLink,
     RouterModule,
     CommonModule

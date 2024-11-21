@@ -1,9 +1,9 @@
 // login.component.ts
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm, FormsModule } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared.module';
+import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
+import { SharedModule } from '../../../shared/shared.module.js';
 
 @Component({
   selector: 'app-login',
