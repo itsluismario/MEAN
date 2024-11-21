@@ -4,11 +4,14 @@ import { TPost, TPostCreated, TMongoDBResponse,TPostResponse, TPostGetResponse }
 import { map, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.development';
 
 interface UpdatePostResponse {
   message: string;
   imagePath: string | null;
 }
+
+const BACKEND_URL = environment.apiUrl + '/posts';
 
 @Injectable({providedIn: 'root'})
 export class PostsService {
@@ -22,7 +25,7 @@ export class PostsService {
     const queryParams = `?pagesize=${postPerPage}&page=${currentPage}`;
 
     this.http
-      .get<{message: string, posts: TPost[], maxPosts: number, creator: string}>('http://localhost:3000/api/posts' + queryParams)
+      .get<{message: string, posts: TPost[], maxPosts: number, creator: string}>(BACKEND_URL + queryParams)
       .pipe(map(postData => {
         return {
           posts: postData.posts.map(post => {
@@ -48,7 +51,7 @@ export class PostsService {
   }
 
   getPost(id: string) {
-    return this.http.get<TPostGetResponse>('http://localhost:3000/api/posts/' + id);
+    return this.http.get<TPostGetResponse>( BACKEND_URL + '/' + id);
   }
 
   getPostUpdateListener() {
@@ -63,7 +66,7 @@ export class PostsService {
       postData.append('image', image, image.name);
     }
     this.http
-      .post<{ message: string, post: TPost }>('http://localhost:3000/api/posts', postData)
+      .post<{ message: string, post: TPost }>(BACKEND_URL, postData)
       .subscribe((responseData) => {
         this.router.navigate(['/']);
       });
@@ -89,7 +92,7 @@ export class PostsService {
       }
     }
     this.http
-      .put<UpdatePostResponse>('http://localhost:3000/api/posts/' + id, postData)
+      .put<UpdatePostResponse>(BACKEND_URL + '/' + id, postData)
       .subscribe(response =>
       {
         this.router.navigate(['/']);
@@ -98,7 +101,7 @@ export class PostsService {
   }
 
   deletePost(postId: string) {
-    return this.http.delete('http://localhost:3000/api/posts/' + postId)
+    return this.http.delete(BACKEND_URL + '/' + postId)
   }
 
 }

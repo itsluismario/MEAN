@@ -1,9 +1,8 @@
 // auth-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from '../login/login.component';
-import { SignupComponent } from './signup.component';
-import { AuthGuard } from '../auth.guard';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   {
@@ -12,12 +11,10 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
-        canActivate: [AuthGuard]
       },
       {
         path: 'signup',
-        component: SignupComponent,
-        canActivate: [AuthGuard]
+        component: SignupComponent
       }
     ]
   }
