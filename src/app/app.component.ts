@@ -5,7 +5,6 @@ import { HeaderComponent } from './pages/header/header.component';
 import { SharedModule } from './shared/shared.module';
 import { AuthService } from './pages/auth/auth.service';
 import { ErrorDialogComponent } from './error/error-dialog.component';
-import { AuthModule } from './pages/auth/auth.module';
 import { PostModule } from './pages/post/post.module';
 
 @Component({
@@ -13,7 +12,6 @@ import { PostModule } from './pages/post/post.module';
   standalone: true,
   imports: [
     SharedModule,
-    AuthModule,
     RouterOutlet,
     HeaderComponent,
     PostModule,

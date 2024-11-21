@@ -3,13 +3,15 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { AuthRoutingModule } from './signup/auth-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    AuthRoutingModule
   ]
 })
 export class AuthModule {}

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { AuthData } from './auth-data.model';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
     return this.token;
   }
 
-  getIsAuth() {
+  getIsAuth(): boolean {
     return this.isAuthenticated;
   }
 
@@ -27,7 +28,7 @@ export class AuthService {
     return this.userId;
   }
 
-  getAuthStatusListener() {
+  getAuthStatusListener(): Observable<boolean> {
     return this.authStatusListener.asObservable();
   }
 
